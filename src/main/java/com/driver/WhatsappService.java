@@ -28,16 +28,16 @@ public class WhatsappService {
         return whatsappRepository.sendMessage(message, sender, group);
     }
 
-    public String changeAdmin(User approver, User user, Group group) {
-        return "empty";
+    public String changeAdmin(User approver, User user, Group group) throws Exception{
+        return whatsappRepository.changeAdmin(approver, user, group);
     }
 
-    public int removeUser(User user) {
-        return 0;
+    public int removeUser(User user) throws Exception{
+        return whatsappRepository.removeUser(user);
     }
 
-    public String findMessage(Date start, Date end, int k) {
+    public String findMessage(Date start, Date end, int k) throws Exception{
 
-        return "empty";
+        return whatsappRepository.findMessage(start, end, k);
     }
 }
