@@ -14,11 +14,15 @@ public class WhatsappService {
     WhatsappRepository whatsappRepository;
 
     public String createUser(String name, String mobile){
-        if(whatsappRepository.userHashMap.containsValue(mobile)){
+        if(whatsappRepository.userHashMap.containsKey(mobile)){
             throw new RuntimeException("User already exists");
         }
-        User user = new User(name,mobile);
-        whatsappRepository.userHashMap.put(name,user);
+        User user = new User();
+        user.setName(name);
+        user.setMobile(mobile);
+
+        whatsappRepository.userHashMap.put(mobile,user);
+
         return "SUCCESS";
     }
 
@@ -29,6 +33,7 @@ public class WhatsappService {
 
             User admin = users.get(0);
             group = new Group(admin.getName(), 2);
+            System.out.println(group);
             whatsappRepository.groupHashMap.put(group,users);
 
         }else{
@@ -38,8 +43,9 @@ public class WhatsappService {
 
             String groupName = "Group" + size+1;
             group = new Group(groupName, users.size()+1);
+            System.out.println(group + groupName);
             whatsappRepository.groupHashMap.put(group,users);
-            group = new Group(admin.getName(), users.size()+1);
+
         }
         return group;
     }
@@ -52,7 +58,7 @@ public class WhatsappService {
 
         message.setId(size);
         message.setContent(content);
-
+        System.out.println(message);
         whatsappRepository.messageHashMap.put(size,message);
         return size;
     }
@@ -69,6 +75,7 @@ public class WhatsappService {
         }
 
         int msg = whatsappRepository.groupIntegerHashMap.get(group);
+        System.out.println(msg);
         whatsappRepository.groupIntegerHashMap.put(group,msg+1);
         return msg+1;
 
