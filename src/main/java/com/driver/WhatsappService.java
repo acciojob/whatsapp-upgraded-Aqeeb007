@@ -13,72 +13,19 @@ public class WhatsappService {
     @Autowired
     WhatsappRepository whatsappRepository;
 
-    public String createUser(String name, String mobile){
-        if(whatsappRepository.userHashMap.containsKey(mobile)){
-            throw new RuntimeException("User already exists");
-        }
-        User user = new User();
-        user.setName(name);
-        user.setMobile(mobile);
-
-        whatsappRepository.userHashMap.put(mobile,user);
-
-        return "SUCCESS";
+    public String createUser(String name, String mobile)throws Exception{
+        return whatsappRepository.createUser(name, mobile);
     }
-
-
     public Group createGroup(List<User> users) {
-        Group group;
-        if (users.size() == 2){
-
-            User admin = users.get(0);
-            group = new Group(admin.getName(), 2);
-            System.out.println(group);
-            whatsappRepository.groupHashMap.put(group,users);
-
-        }else{
-
-            User admin = users.get(0);
-            int size = whatsappRepository.groupHashMap.size();
-
-            String groupName = "Group" + size+1;
-            group = new Group(groupName, users.size()+1);
-            System.out.println(group + groupName);
-            whatsappRepository.groupHashMap.put(group,users);
-
-        }
-        return group;
+        return whatsappRepository.createGroup(users);
     }
-
 
     public int createMessage(String content) {
-        int size = whatsappRepository.messageHashMap.size()+1;
-
-        Message message = new Message();
-
-        message.setId(size);
-        message.setContent(content);
-        System.out.println(message);
-        whatsappRepository.messageHashMap.put(size,message);
-        return size;
+     return whatsappRepository.createMessage(content);
     }
 
-    public int sendMessage(Message message, User sender, Group group) {
-        if(!whatsappRepository.messageHashMap.containsKey(message.getId())){
-            throw new RuntimeException("Group does not exist");
-        }
-
-        List<User> member = whatsappRepository.groupHashMap.get(group);
-
-        if(!member.contains(sender)){
-            throw new RuntimeException("You are not allowed to send message");
-        }
-
-        int msg = whatsappRepository.groupIntegerHashMap.get(group);
-        System.out.println(msg);
-        whatsappRepository.groupIntegerHashMap.put(group,msg+1);
-        return msg+1;
-
+    public int sendMessage(Message message, User sender, Group group)throws Exception {
+        return whatsappRepository.sendMessage(message, sender, group);
     }
 
     public String changeAdmin(User approver, User user, Group group) {
